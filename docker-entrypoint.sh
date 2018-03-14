@@ -30,4 +30,12 @@ if [ "$socketMissing" = 1 -a "$1" = forego -a "$2" = start -a "$3" = '-r' ]; the
 	exit 1
 fi
 
+USER_ID=${LOCAL_USER_ID:-1000}
+GROUP_ID=${LOCAL_GROUP_ID:-1000}
+groupmod -g $USER_ID nginx
+usermod -u $USER_ID -g $GROUP_ID nginx
+mkdir -p /app/ee4/nginx/conf.d
+touch /app/ee4/nginx/conf.d/default.conf
+chown -R nginx:nginx /app/
+
 exec "$@"
